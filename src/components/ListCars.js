@@ -4,6 +4,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
 import Button from '@mui/material/Button';
 import AddCar from './AddCar';
+import EditCar from './EditCar';
 
 function ListCars() {
   const [cars, setCars] = useState([]);
@@ -54,6 +55,23 @@ function ListCars() {
       .catch((err) => console.error.apply(err));
   };
 
+  //Update Car
+  const updateCar = (car, link) => {
+    fetch(link, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(car),
+    })
+      .then((response) => {
+        if (response.ok) {
+          fetchCars();
+        } else {
+          alert('Something went wrong!');
+        }
+      })
+      .catch((err) => console.error.apply(err));
+  };
+
   //Datagrid column def
   const columns = [
     { field: 'brand', headerName: 'Brand', width: 200 },
@@ -62,12 +80,21 @@ function ListCars() {
     { field: 'buildYear', headerName: 'Year', width: 200 },
     { field: 'price', headerName: 'Price', width: 200 },
     {
+      field: '_links.car.href',
+      headerName: '',
+      sortable: false,
+      filterable: false,
+      width: 100,
+      renderCell: (row) => <EditCar data={row} updateCar={updateCar} />,
+    },
+    {
       field: '_links.self.href',
       headerName: '',
       sortable: false,
       filterable: false,
+      width: 100,
       renderCell: (row) => (
-        <Button variant="contained" onClick={() => onDelClick(row.id)}>
+        <Button variant="outlined" onClick={() => onDelClick(row.id)}>
           Delete
         </Button>
       ),

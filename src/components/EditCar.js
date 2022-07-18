@@ -5,7 +5,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 
-function AddCar(props) {
+function EditCar(props) {
   const [open, setOpen] = useState(false);
   const [car, setCar] = useState({
     brand: '',
@@ -18,6 +18,15 @@ function AddCar(props) {
 
   //Open the modal form
   const handleClickOpen = () => {
+    setCar({
+      brand: props.data.row.brand,
+      model: props.data.row.model,
+      color: props.data.row.color,
+      buildYear: props.data.row.buildYear,
+      price: props.data.row.price,
+      registerNumber: props.data.row.registerNumber,
+    });
+
     setOpen(true);
   };
 
@@ -33,17 +42,17 @@ function AddCar(props) {
 
   //Save new car
   const handleSave = () => {
-    props.addCar(car);
+    props.updateCar(car, props.data.id);
     handleClose();
   };
 
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
-        New Car
+        Edit
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>New Car</DialogTitle>
+        <DialogTitle>Edit Car</DialogTitle>
         <DialogContent>
           <input
             placeholder="Brand"
@@ -68,7 +77,7 @@ function AddCar(props) {
           <br />
           <input
             placeholder="Year"
-            name="year"
+            name="buildYear"
             value={car.buildYear}
             onChange={handleChange}
           />
@@ -101,4 +110,4 @@ function AddCar(props) {
   );
 }
 
-export default AddCar;
+export default EditCar;
