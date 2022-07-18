@@ -7,9 +7,12 @@ import {
   gridClasses,
 } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
-import Button from '@mui/material/Button';
+
+import Stack from '@mui/material/Stack';
 import AddCar from './AddCar';
 import EditCar from './EditCar';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function ListCars() {
   const [cars, setCars] = useState([]);
@@ -21,7 +24,12 @@ function ListCars() {
 
   //Fetch/List Cars
   const fetchCars = () => {
-    fetch(SERVER_URL + 'api/cars')
+    //get Jwt Token from session storage
+    const token = sessionStorage.getItem('jwt');
+
+    fetch(SERVER_URL + 'api/cars', {
+      headers: { Authorization: token },
+    })
       .then((response) => response.json())
       .then((data) => setCars(data._embedded.cars))
       .catch((err) => console.error(err));
@@ -30,7 +38,13 @@ function ListCars() {
   //Delete a car
   const onDelClick = (url) => {
     if (window.confirm('Are you sure to delete ?')) {
-      fetch(url, { method: 'DELETE' })
+      //get Jwt Token from session storage
+      const token = sessionStorage.getItem('jwt');
+
+      fetch(url, {
+        method: 'DELETE',
+        headers: { Authorization: token },
+      })
         .then((response) => {
           if (response.ok) {
             fetchCars();
@@ -45,9 +59,15 @@ function ListCars() {
 
   //Add new car
   const addCar = (car) => {
+    //get Jwt Token from session storage
+    const token = sessionStorage.getItem('jwt');
+
     fetch(SERVER_URL + 'api/cars', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
       body: JSON.stringify(car),
     })
       .then((response) => {
@@ -62,9 +82,14 @@ function ListCars() {
 
   //Update Car
   const updateCar = (car, link) => {
+    //get Jwt Token from session storage
+    const token = sessionStorage.getItem('jwt');
     fetch(link, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
       body: JSON.stringify(car),
     })
       .then((response) => {
@@ -99,9 +124,9 @@ function ListCars() {
       filterable: false,
       width: 100,
       renderCell: (row) => (
-        <Button variant="outlined" onClick={() => onDelClick(row.id)}>
-          Delete
-        </Button>
+        <IconButton onClick={() => onDelClick(row.id)}>
+          <DeleteIcon color="error" />
+        </IconButton>
       ),
     },
   ];
@@ -116,7 +141,9 @@ function ListCars() {
 
   return (
     <React.Fragment>
-      <AddCar addCar={addCar} />
+      <Stack mt={2} mb={2}>
+        <AddCar addCar={addCar} />
+      </Stack>
 
       <div style={{ height: 500, width: '100%' }}>
         <DataGrid

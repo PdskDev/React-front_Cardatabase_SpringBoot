@@ -4,6 +4,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 function AddCar(props) {
   const [open, setOpen] = useState(false);
@@ -39,63 +43,74 @@ function AddCar(props) {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button variant="contained" color="primary" onClick={handleClickOpen}>
+        <AddCircleOutlineIcon />
         New Car
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>New Car</DialogTitle>
-        <DialogContent>
-          <input
-            placeholder="Brand"
-            name="brand"
-            value={car.brand}
-            onChange={handleChange}
-          />
-          <br />
-          <input
-            placeholder="Model"
-            name="model"
-            value={car.model}
-            onChange={handleChange}
-          />
-          <br />
-          <input
-            placeholder="Color"
-            name="color"
-            value={car.color}
-            onChange={handleChange}
-          />
-          <br />
-          <input
-            placeholder="Year"
-            name="year"
-            value={car.buildYear}
-            onChange={handleChange}
-          />
-          <br />
-          <input
-            placeholder="Register Number"
-            name="registerNumber"
-            value={car.registerNumber}
-            onChange={handleChange}
-          />
-          <br />
-          <input
-            placeholder="Price"
-            name="price"
-            value={car.price}
-            onChange={handleChange}
-          />
-          <br />
-        </DialogContent>
-        <DialogActions>
-          <Button variant="outlined" onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button variant="outlined" onClick={handleSave}>
-            Save
-          </Button>
-        </DialogActions>
+        <Box sx={{ width: 500 }}>
+          <DialogTitle>New Car</DialogTitle>
+          <DialogContent>
+            <Stack spacing={2} mt={1}>
+              <TextField
+                label="Brand"
+                name="brand"
+                autoFocus
+                variant="standard"
+                value={car.brand}
+                onChange={handleChange}
+              />
+              <TextField
+                label="Model"
+                name="model"
+                autoFocus
+                variant="standard"
+                value={car.model}
+                onChange={handleChange}
+              />
+              <TextField
+                label="Color"
+                name="color"
+                autoFocus
+                variant="standard"
+                value={car.color}
+                onChange={handleChange}
+              />
+              <TextField
+                label="Year"
+                name="buildYear"
+                autoFocus
+                variant="standard"
+                value={car.buildYear}
+                onChange={handleChange}
+              />
+              <TextField
+                label="Register Number"
+                name="registerNumber"
+                autoFocus
+                variant="standard"
+                value={car.registerNumber}
+                onChange={handleChange}
+              />
+              <TextField
+                label="Price"
+                name="price"
+                autoFocus
+                variant="standard"
+                value={car.price}
+                onChange={handleChange}
+              />
+            </Stack>
+          </DialogContent>
+          <DialogActions>
+            <Button variant="contained" color="error" onClick={handleClose}>
+              Cancel
+            </Button>
+            <Button variant="contained" color="primary" onClick={handleSave}>
+              Save
+            </Button>
+          </DialogActions>
+        </Box>
       </Dialog>
     </div>
   );
